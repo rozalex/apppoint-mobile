@@ -1,20 +1,60 @@
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
+import { ListItem } from 'react-native-material-ui';
+import axios from 'axios';
+import { NavigationEvents } from 'react-navigation';
+import moment from 'moment';
 
-import { MonoText } from '../components/StyledText';
+import * as constants from '../constants/env';
+
+const Appointment = ({appointment}) => (
+  <ListItem
+    divider
+    centerElement={{
+      primaryText: `${appointment.date.substring(0,10)} ${appointment.username}`,
+    }}
+    onPress={() => {}}
+  />
+)
 
 export default function HomeScreen() {
+  const [appointments, setAppointments] = useState([]);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, []);
+
+  const fetchAppointments = async () => {
+    const {data} = await axios.get(`${constants.DB_URL}/appointments/?provider=Alex`);
+    setAppointments(data);
+  }
+
+  const appointmentList = () => {
+    return appointments.map(currentappointment => {
+      return <Appointment appointment={currentappointment} key={currentappointment._id}/>;
+    })
+  }
+
+  if (!appointments.length) {
+    return <Text>Loading...</Text>
+  }
+
   return (
+    
     <View style={styles.container}>
+      <NavigationEvents
+        onWillFocus={() => {
+          fetchAppointments();
+        }}
+      />
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
@@ -28,24 +68,13 @@ export default function HomeScreen() {
             style={styles.welcomeImage}
           />
         </View>
-
         <View style={styles.getStartedContainer}>
-          <Text>AppPoint!</Text>
+          <Text>הפגישות שלך</Text>
+        </View>
+        <View>
+          {appointmentList()}
         </View>
       </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-          <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText>
-        </View>
-      </View>
     </View>
   );
 }
