@@ -20,8 +20,8 @@ export default function NewAppointmentScreen() {
   const addAppointment = () => {
     const appointment = {
       provider: "Alex",
-      username: "Natalia",
-      description: "Mobile test",
+      username: "Yuval",
+      description: "Work on AppPoint.",
       duration: 10,
       date: selectedStartDate.substring(0,10)
     }
@@ -51,6 +51,7 @@ export default function NewAppointmentScreen() {
 
 NewAppointmentScreen.navigationOptions = {
   title: 'פגישה חדשה',
+  headerTitleStyle: { flex: 1, alignItems: 'flex-start', textAlign: 'right' }
 };
 
 const styles = StyleSheet.create({

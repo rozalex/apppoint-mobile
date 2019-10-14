@@ -5,7 +5,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import NewAppointmentScreen from '../screens/NewAppointmentScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import FavoritesScreen from '../screens/FavoritesScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -51,26 +51,26 @@ NewAppointmentStack.navigationOptions = {
 
 NewAppointmentStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const FavoritesStack = createStackNavigator(
   {
-    Settings: SettingsScreen,
+    Settings: FavoritesScreen,
   },
   config
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'הגדרות',
+FavoritesStack.navigationOptions = {
+  tabBarLabel: 'מועדפים',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
   ),
 };
 
-SettingsStack.path = '';
+FavoritesStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   NewAppointmentStack,
-  SettingsStack,
+  FavoritesStack,
 });
 
 tabNavigator.path = '';
